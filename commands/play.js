@@ -16,10 +16,13 @@ module.exports = {
 		const url = args[1];
 		const pattern = /^https?:\/\/(www.youtube.com|youtube.com)\/.*list(.*)$/;
 		const pattern2 = /^https?:\/\/(www.youtube.com|youtube.com)\/watch\?v=/;
+		// escalera de if-else para ver que corno hacer ?)
 		if (url.match(pattern)) {
 			message.channel.send('Empezando a buscar en la playlist');
 			const playlist = await youtube.getPlaylist(url);
 			const videos = await playlist.getVideos();
+			// luego se podria agregar una variable para ver cuantas canciones se agregaron a la playlist
+			let n = 0;
 			for (const video of Object.values(videos)) {
 				const songInfo2 = await ytdl.getInfo(video.id);
 				const song2 = {
@@ -27,9 +30,10 @@ module.exports = {
 					url: songInfo2.video_url,
 				};
 				this.preplay(message, song2.url, true);
+				n++;
 			}
 			return message.channel.send(
-				`✅ Playlist: **${playlist.title}** Se esta reproduciendo!`
+				`✅ Playlist: **${playlist.title}** Se esta reproduciendo con **${n}** canciones!`
 			);
 		} else if (args[1] == 'search') {
 			this.buscar(message, message.content.split('search ')[1]);
@@ -47,14 +51,17 @@ module.exports = {
 		const queue = message.client.queue;
 		const serverQueue = message.client.queue.get(message.guild.id);
 		const voiceChannel = message.member.voiceChannel;
-		if (!voiceChannel)
-			return message.channel.send(
-				'You need to be in a voice channel to play music!'
+		console.log('URL a reproducir ñeri:');
+		console.log(url2);
+		if (!voiceChannel) {
+			return message.reply(
+				'Si no estas en un canal de voz no puedo pasar cumbia :('
 			);
+		}
 		const permissions = voiceChannel.permissionsFor(message.client.user);
 		if (!permissions.has('CONNECT') || !permissions.has('SPEAK')) {
 			return message.channel.send(
-				'I need the permissions to join and speak in your voice channel!'
+				'los admin se mandaron cagada y no puedo entrar al canal, todo culpa de @FDSoftware'
 			);
 		}
 
@@ -71,7 +78,7 @@ module.exports = {
 				connection: null,
 				songs: [],
 				// eslint-disable-next-line no-inline-comments
-				volume: 2.14, //2.14
+				volume: 3.14, // 2.14 ~ 3.14 la cosa sana para los timpanos
 				playing: true,
 			};
 
@@ -95,7 +102,7 @@ module.exports = {
 			serverQueue.songs.push(song);
 			if (!NO_SPAM) {
 				return message.channel.send(
-					`✅  **${song.title}** has been added to the queue!`
+					`✅  **${song.title}** se agrego a la lista!`
 				);
 			}
 			return;
@@ -129,14 +136,14 @@ module.exports = {
 
 	async buscar(msg, busqueda) {
 		try {
-			var videos = await youtube.searchVideos(busqueda, 10);
+			const videos = await youtube.searchVideos(busqueda, 10);
 			let index = 0;
 			msg.channel.send(`
 __**Song selection:**__
 
 ${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
 
-Please provide a value to select one of the search results ranging from 1-10.
+responde con un numero del 1 al 10 para elegir el video a reproducir.
 			`);
 			// eslint-disable-next-line max-depth
 			try {

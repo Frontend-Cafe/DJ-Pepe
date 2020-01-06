@@ -1,5 +1,5 @@
 {
-  "name": "music-bot",
+  "name": "dj-pepe",
   "version": "1.0.0",
   "repository": "https://github.com/TannerGabriel/discord-music-bot.git",
   "description": "A simple discord music bot",
@@ -12,21 +12,21 @@
     "music",
     "bot"
   ],
-  "author": "Gabriel Tanner",
+  "author": "FDSoftware",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.4.2",
+    "discord.js": "^11.5.1",
     "ffmpeg": "0.0.4",
     "fluent-ffmpeg": "^2.1.2",
     "opusscript": "0.0.7",
     "simple-youtube-api": "^5.2.1",
-    "sqlite3": "^4.1.0",
-    "ytdl-core": "^1.0.0"
+    "sqlite3": "^4.1.1",
+    "ytdl-core": "^1.0.6"
   },
   "devDependencies": {
-    "eslint": "^6.7.0",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-plugin-prettier": "^3.1.1",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "prettier": "^1.19.1"
   }
 }
