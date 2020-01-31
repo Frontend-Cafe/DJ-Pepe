@@ -41,7 +41,7 @@ module.exports = {
 					)
 				);
 		} else {
-			message.reply('you have no power+ here', {
+			message.reply('you have no power here', {
 				file:
 					'https://i.kym-cdn.com/photos/images/newsfeed/000/631/254/eda.jpg',
 			});

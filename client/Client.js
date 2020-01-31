@@ -10,7 +10,7 @@ module.exports = class extends Client {
 		this.commands = new Collection();
 
 		this.queue = new Map();
-
+		this.volumen = 5;
 		this.config = config;
 	}
 };
