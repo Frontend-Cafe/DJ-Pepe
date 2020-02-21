@@ -15,17 +15,21 @@
   "author": "FDSoftware",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.5.1",
+    "@discordjs/opus": "^0.1.0",
+    "@discordjs/uws": "^10.149.0",
+    "abort-controller": "^3.0.0",
+    "discord.js": "file:discord.js",
     "ffmpeg": "0.0.4",
     "fluent-ffmpeg": "^2.1.2",
     "opusscript": "0.0.7",
+    "setimmediate": "^1.0.5",
     "simple-youtube-api": "^5.2.1",
     "sqlite3": "^4.1.1",
-    "ytdl-core": "^1.0.6"
+    "ytdl-core": "^1.0.9"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.9.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "^1.19.1"
   }

@@ -50,10 +50,11 @@ module.exports = {
 	async preplay(message, url2, NO_SPAM) {
 		const queue = message.client.queue;
 		const serverQueue = message.client.queue.get(message.guild.id);
-		const voiceChannel = message.member.voiceChannel;
+		const voiceChannel = message.member.voice.channel;
 		console.log('URL a reproducir ñeri:');
 		console.log(url2);
 		if (!voiceChannel) {
+			console.log(message.member);
 			return message.reply(
 				'Si no estas en un canal de voz no puedo pasar cumbia :('
 			);
@@ -78,7 +79,7 @@ module.exports = {
 				connection: null,
 				songs: [],
 				// eslint-disable-next-line no-inline-comments
-				volume: 3.14, // 2.14 ~ 3.14 la cosa sana para los timpanos
+				volume: 2.14, // 2.14 ~ 3.14 la cosa sana para los timpanos
 				playing: true,
 			};
 
@@ -119,9 +120,32 @@ module.exports = {
 			queue.delete(guild.id);
 			return;
 		}
+		console.log(serverQueue.songs);
+		/* CODIGO NEW */
+		const voiceChannel = message.member.voice.channel;
 
+		if (!voiceChannel) {
+			return message.reply('please join a voice channel first!');
+		}
+
+		voiceChannel.join().then(connection => {
+			const dispatcher = connection
+				.play(ytdl(song.url, { filter: 'audioonly' }))
+				.on('end', () => {
+					console.log('Music ended!');
+					serverQueue.songs.shift();
+					this.play(message, serverQueue.songs[0]);
+				})
+				.on('error', error => {
+					message.channel.send('uuhY que peLoTuuDOO!!!');
+					console.error(error);
+				});
+
+			dispatcher.on('end', () => voiceChannel.leave());
+		});
+		/* EL OLDSITO 
 		const dispatcher = serverQueue.connection
-			.playStream(ytdl(song.url))
+			.playStream(ytdl(song.url, { filter: 'audioonly' }))
 			.on('end', () => {
 				console.log('Music ended!');
 				serverQueue.songs.shift();
@@ -130,8 +154,9 @@ module.exports = {
 			.on('error', error => {
 				message.channel.send('uuhY que peLoTuuDOO!!!');
 				console.error(error);
-			});
-		dispatcher.setVolumeLogarithmic(serverQueue.volume / 15);
+			}); */
+
+		// dispatcher.setVolumeLogarithmic(serverQueue.volume / 15);
 	},
 
 	async buscar(msg, busqueda) {
@@ -146,25 +171,27 @@ ${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
 responde con un numero del 1 al 10 para elegir el video a reproducir.
 			`);
 			// eslint-disable-next-line max-depth
+			let indice = 1;
 			try {
 				// eslint-disable-next-line no-var
 				var response = await msg.channel.awaitMessages(
-					msg2 => msg2.content > 0 && msg2.content < 11,
+					msg2 => msg2.content > 0,
 					{
 						maxMatches: 1,
 						time: 15000,
 						errors: ['time'],
 					}
 				);
+				indice = parseInt(response.first().content);
 			} catch (err) {
-				console.error(err);
+				err.map(m => console.log(m.content));
 				return msg.channel.send(
-					'no se ingreso un numero, o es invalido, cancelando busqueda.'
+					'no se ingreso un numero, o es invalido, eligiendo el primer resultado.'
 				);
+			} finally {
+				const video = await youtube.getVideoByID(videos[indice - 1].id);
+				this.preplay(msg, video.url, false);
 			}
-			const videoIndex = parseInt(response.first().content);
-			const video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-			this.preplay(msg, video.url, false);
 		} catch (err) {
 			console.error(err);
 			return msg.channel.send(
