@@ -1,7 +1,6 @@
 const { Util } = require('discord.js');
 const ytdl = require('ytdl-core');
-const { GToken } = require('../config.json');
-
+const GToken = process.env.GTOKEN;
 const YouTube = require('simple-youtube-api');
 const youtube = new YouTube(GToken);
 module.exports = {
