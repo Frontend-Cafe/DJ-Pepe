@@ -1,7 +1,10 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const Client = require('./client/Client');
-const { prefix, token } = require('./config.json');
+require('dotenv').config();
+const GToken = process.env.GTOKEN;
+
+const { prefix } = require('./config.json');
 
 const client = new Client();
 client.commands = new Discord.Collection();
@@ -15,7 +18,8 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-console.log(client.commands);
+client.commands.map(m => console.log({ comando: m.name, desc: m.description }));
+//console.log(client.commands.name);
 
 const logMemUsg = () => {
 	console.log(
@@ -66,4 +70,4 @@ client.on('message', async message => {
 	}
 });
 
-client.login(token);
+client.login();
