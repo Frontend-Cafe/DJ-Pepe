@@ -1,10 +1,14 @@
+// Para el bot:
 const fs = require('fs');
 const Discord = require('discord.js');
 const Client = require('./client/Client');
 require('dotenv').config();
 const GToken = process.env.GTOKEN;
-
 const { prefix } = require('./config.json');
+
+// Para server Express para deploy en Heroku
+const express = require('express');
+const app = express();
 
 const client = new Client();
 client.commands = new Discord.Collection();
@@ -71,3 +75,12 @@ client.on('message', async message => {
 });
 
 client.login();
+
+// server Express:
+app.get('/', function(req, res) {
+	res.send('DJ Pepe ta vivo!');
+});
+
+app.listen(process.env.PORT || 5000, function() {
+	console.log('Pasando cumbiones en el puerto 5000!');
+});
