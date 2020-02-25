@@ -3,7 +3,6 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const Client = require('./client/Client');
 require('dotenv').config();
-const GToken = process.env.GTOKEN;
 const { prefix } = require('./config.json');
 
 // Para server Express para deploy en Heroku
@@ -13,9 +12,12 @@ const app = express();
 const client = new Client();
 client.commands = new Discord.Collection();
 
+// eslint-disable-next-line no-unused-vars
 const queue = new Map();
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs
+	.readdirSync('./commands')
+	.filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -23,7 +25,7 @@ for (const file of commandFiles) {
 }
 
 client.commands.map(m => console.log({ comando: m.name, desc: m.description }));
-//console.log(client.commands.name);
+// console.log(client.commands.name);
 
 const logMemUsg = () => {
 	console.log(
@@ -78,7 +80,12 @@ client.login();
 
 // server Express:
 app.get('/', function(req, res) {
-	res.send('DJ Pepe ta vivo!');
+	const msg = `DJ Pepe ta vivo!, usando: ${(
+		process.memoryUsage().heapUsed /
+		1024 /
+		1024
+	).toPrecision(5)} MB de RAM`;
+	res.send(msg);
 });
 
 app.listen(process.env.PORT || 5000, function() {
