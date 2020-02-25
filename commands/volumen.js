@@ -6,8 +6,12 @@ module.exports = {
 		if (isNaN(args[1])) {
 			return message.reply('ingresa un numero!');
 		}
-		const allowedRoles = ['Admin','Leaders','Moderators','Mentores'];
-		if (message.member.roles.some(r => allowedRoles.includes(r))) {
+		const allowedRoles = ['Admin', 'Moderators', 'Mentores', 'DJ'];
+		if (
+			message.member.roles.map(m => {
+				return allowedRoles.includes(m.name);
+			})
+		) {
 			// *por las dudas* nos fijamos que este en un canal de voz
 			const voiceChannel = message.member.voiceChannel;
 			if (!voiceChannel) {

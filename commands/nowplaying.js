@@ -16,6 +16,6 @@ module.exports = {
 			}
 			i++;
 		});
-		return message.channel.send(string); 
+		return message.channel.send(string);
 	},
 };

@@ -1,4 +1,3 @@
-const { Util } = require('discord.js');
 const ytdl = require('ytdl-core');
 const GToken = process.env.GTOKEN;
 const YouTube = require('simple-youtube-api');
