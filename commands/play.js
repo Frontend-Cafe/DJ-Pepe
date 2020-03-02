@@ -14,6 +14,7 @@ module.exports = {
 		const url = args[1];
 		const pattern = /^https?:\/\/(www.youtube.com|youtube.com)\/.*list(.*)$/;
 		const pattern2 = /^https?:\/\/(www.youtube.com|youtube.com)\/watch\?v=/;
+		const pattern3 = /^(https?:\/\/(www.youtu.be|youtu.be))|(www.youtu.be|youtu.be)/;
 		// escalera de if-else para ver que corno hacer ?)
 		if (url.match(pattern)) {
 			message.channel.send('Empezando a buscar en la playlist');
@@ -38,6 +39,16 @@ module.exports = {
 			return;
 		} else if (url.match(pattern2)) {
 			this.preplay(message, args[1], false);
+			return;
+		} else if (url.match(pattern3)) {
+			this.preplay(
+				message,
+				`https://www.youtube.com/watch?v=${args[1].slice(
+					args[1].search('be/') + 3
+				)}
+				 `,
+				false
+			);
 			return;
 		} else {
 			return message.reply(
