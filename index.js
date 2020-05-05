@@ -1,35 +1,34 @@
 require('dotenv').config();
-const fs = require('fs');
 const Discord = require('discord.js');
 const Client = require('./client/Client');
 const { PREFIX, TOKEN } = process.env;
 
+import { Middlewares, logMemUsg } from './utils';
+import { ServerInfo } from './commands/text/server';
+
 const client = new Client();
 client.commands = new Discord.Collection();
 
-const queue = new Map();
+const func2 = message => console.log('soy la funcion1: ' + message.content);
+const func = message => console.log('soy la funcion2: ' + message.content);
 
-const commandFiles = fs
-	.readdirSync('./commands')
-	.filter(file => file.endsWith('.js'));
-
-/* for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-} */
-
-console.log(client.commands);
-
-const logMemUsg = () => {
-	console.log(
-		`The script uses approximately ${process.memoryUsage().heapUsed /
-			1024 /
-			1024} MB`
-	);
-};
+const superComandos = [
+	{ prefix: 'alo', exec: func },
+	{ prefix: 'bai', exec: func2 },
+];
+superComandos.push(ServerInfo());
+const api = Middlewares(superComandos);
 
 client.once('ready', () => {
+	const messageTrucho = {
+		content: 'bai',
+	};
+	api(messageTrucho);
+	messageTrucho.content = 'alo';
+	api(messageTrucho);
+
 	logMemUsg();
+	console.log(superComandos);
 	console.log('Ready!');
 });
 
@@ -41,67 +40,23 @@ client.once('disconnect', () => {
 	console.log('Disconnect!');
 });
 
-client.on('messageReactionAdd', async (reaction, user) => {
-	// When we receive a reaction we check if the message is partial or not
-	if (reaction.message.partial) {
-		// If the message was removed the fetching might result in an API error, which we need to handle
-		try {
-			await reaction.message.fetch();
-		} catch (error) {
-			console.log(
-				'Something went wrong when fetching the message: ',
-				error
-			);
-		}
-	}
-	// Now the message has been cached and is fully available
-	console.log(
-		`${reaction.message.author.username}'s message "${reaction.message.content}" gained a reaction! ${reaction._emoji.identifier}`
-	);
-	// We can also check if the reaction is partial or not
-	if (reaction.partial) {
-		try {
-			await reaction.fetch();
-		} catch (error) {
-			console.log(
-				'Something went wrong when fetching the reaction: ',
-				error
-			);
-		}
-	}
-	// Now the reaction is fully available and the properties will be reflected accurately:
-	console.log(
-		`${reaction.count} user(s) have given the same reaction to this message!`
-	);
-});
-
 client.on('message', async message => {
 	const args = message.content.slice(1).split(/ +/);
-	const commandName = args.shift().toLowerCase();
-	const command = client.commands.get(commandName);
-
+	console.log(args);
 	if (message.author.bot) return;
-	if (!message.content.startsWith(PREFIX)) return;
-	if (message.content.startsWith('!welcome')) {
-		client.channels
-			.get('594935077637718027')
-			.fetchMessage('646726213003509770')
-			.then(message2 => console.log(message.reply(message2.content)))
-			.catch(console.error);
-	} else {
-		try {
-			command.execute(message);
-		} catch (error) {
-			console.error(error);
-			const numero = Math.floor(Math.random() * 100 + 1);
-			if (numero == 45) {
-				message.reply('Ese comando no existe, pero la puta madreee!!!');
-			} else {
-				message.reply('usa !help para tener una lista de comandos');
-			}
+	if (!message.content.startsWith(PREFIX)) return; // quien te conoce papa?
+
+	try {
+		api(message);
+	} catch (error) {
+		console.error(error);
+		const numero = Math.floor(Math.random() * 100 + 1);
+		if (numero == 45) {
+			message.reply('Ese comando no existe, pero la puta madreee!!!');
+		} else {
+			message.reply('usa !help para tener una lista de comandos');
 		}
 	}
 });
 
-console.log(TOKEN);
 client.login(TOKEN);

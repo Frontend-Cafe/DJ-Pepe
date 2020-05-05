@@ -1,38 +1,40 @@
 {
-  "name": "dj-pepe",
-  "version": "1.0.0",
-  "repository": "https://github.com/TannerGabriel/discord-music-bot.git",
-  "description": "A simple discord music bot",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index"
-  },
-  "keywords": [
-    "discord",
-    "music",
-    "bot"
-  ],
-  "author": "FDSoftware",
-  "license": "MIT",
-  "dependencies": {
-    "@discordjs/opus": "^0.1.0",
-    "@discordjs/uws": "^10.149.0",
-    "abort-controller": "^3.0.0",
-    "discord.js": "^12.2.0",
-    "dotenv": "^8.2.0",
-    "ffmpeg": "0.0.4",
-    "fluent-ffmpeg": "^2.1.2",
-    "opusscript": "0.0.7",
-    "setimmediate": "^1.0.5",
-    "simple-youtube-api": "^5.2.1",
-    "sqlite3": "^4.1.1",
-    "ytdl-core": "^1.0.9"
-  },
-  "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "prettier": "^1.19.1"
-  }
+	"name": "dj-pepe",
+	"version": "1.0.0",
+	"repository": "",
+	"description": "A simple discord music bot",
+	"main": "index.js",
+	"scripts": {
+		"start": "nodemon --exec babel-node index.js"
+	},
+	"author": "FDSoftware",
+	"license": "MIT",
+	"dependencies": {
+		"@discordjs/opus": "^0.1.0",
+		"@discordjs/uws": "^10.149.0",
+		"abort-controller": "^3.0.0",
+		"discord.js": "^12.2.0",
+		"dotenv": "^8.2.0",
+		"ffmpeg": "0.0.4",
+		"fluent-ffmpeg": "^2.1.2",
+		"opusscript": "0.0.7",
+		"setimmediate": "^1.0.5",
+		"simple-youtube-api": "^5.2.1",
+		"sqlite3": "^4.1.1",
+		"ytdl-core": "^1.0.9"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.8.4",
+		"@babel/core": "^7.9.6",
+		"@babel/node": "^7.8.7",
+		"@babel/preset-env": "^7.9.6",
+		"eslint": "^6.8.0",
+		"eslint-config-prettier": "^6.10.0",
+		"eslint-plugin-prettier": "^3.1.2",
+		"nodemon": "^2.0.3",
+		"prettier": "^1.19.1"
+	},
+	"engines": {
+		"node": "10.x"
+	}
 }
