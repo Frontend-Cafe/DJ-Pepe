@@ -1,7 +1,8 @@
+require('dotenv').config();
 const fs = require('fs');
-const Discord = require('./discord.js/src');
+const Discord = require('discord.js');
 const Client = require('./client/Client');
-const { prefix, token } = require('./config.json');
+const { PREFIX, TOKEN } = process.env;
 
 const client = new Client();
 client.commands = new Discord.Collection();
@@ -12,10 +13,10 @@ const commandFiles = fs
 	.readdirSync('./commands')
 	.filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles) {
+/* for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
-}
+} */
 
 console.log(client.commands);
 
@@ -55,7 +56,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 	}
 	// Now the message has been cached and is fully available
 	console.log(
-		`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction!`
+		`${reaction.message.author.username}'s message "${reaction.message.content}" gained a reaction! ${reaction._emoji.identifier}`
 	);
 	// We can also check if the reaction is partial or not
 	if (reaction.partial) {
@@ -80,7 +81,7 @@ client.on('message', async message => {
 	const command = client.commands.get(commandName);
 
 	if (message.author.bot) return;
-	if (!message.content.startsWith(prefix)) return;
+	if (!message.content.startsWith(PREFIX)) return;
 	if (message.content.startsWith('!welcome')) {
 		client.channels
 			.get('594935077637718027')
@@ -102,4 +103,5 @@ client.on('message', async message => {
 	}
 });
 
-client.login(token);
+console.log(TOKEN);
+client.login(TOKEN);

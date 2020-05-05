@@ -6,7 +6,7 @@ module.exports = {
 	execute(message) {
 		let str = '';
 		// eslint-disable-next-line prettier/prettier
-		const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+		const commandFiles = fs.readdirSync('../commands').filter(file => file.endsWith('.js'));
 		const args = message.content.split(' ');
 
 		if (args[1] == undefined) {

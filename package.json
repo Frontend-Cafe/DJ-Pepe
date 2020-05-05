@@ -5,7 +5,8 @@
   "description": "A simple discord music bot",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
   },
   "keywords": [
     "discord",
@@ -18,7 +19,8 @@
     "@discordjs/opus": "^0.1.0",
     "@discordjs/uws": "^10.149.0",
     "abort-controller": "^3.0.0",
-    "discord.js": "file:discord.js",
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
     "ffmpeg": "0.0.4",
     "fluent-ffmpeg": "^2.1.2",
     "opusscript": "0.0.7",
