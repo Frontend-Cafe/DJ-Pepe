@@ -1,7 +1,12 @@
-const ytdl = require('ytdl-core');
+require('dotenv').config();
+const ytdl = require('ytdl-core-discord');
+const { GTOKEN } = process.env;
+console.log(GTOKEN);
+const YouTube = require('simple-youtube-api');
+const youtube = new YouTube(GTOKEN);
 
 // Reproduce los cumbiones
-const play = (message, song) => {
+const play = async (message, song) => {
 	const queue = message.client.queue;
 	const guild = message.guild;
 	const voiceChannel = message.member.voice.channel;
@@ -16,29 +21,26 @@ const play = (message, song) => {
 		queue.delete(guild.id);
 		return;
 	}
-
-	voiceChannel.join().then(connection => {
-		const dispatcher = connection
-			.play(ytdl(song.url))
-			.on('end', () => {
-				console.log('Music ended!');
-				message.channel.send('Music ended!');
-				serverQueue.songs.shift();
-				play(message, serverQueue.songs[0]);
-			})
-			.on('error', error => {
-				message.channel.send('uuhY que peLoTuuDOO!!!');
-				console.error(error);
-			});
-
-		dispatcher.on('end', () => voiceChannel.leave());
+	const connection = await voiceChannel.join();
+	const dispatcher = connection.play(
+		await ytdl(song.url, { filter: 'audioonly' }),
+		{ type: 'opus' }
+	);
+	dispatcher.on('finish', () => {
+		if (serverQueue.songs.length <= 1)
+			message.channel.send('termine de reproducir!');
+		serverQueue.songs.shift();
+		play(message, serverQueue.songs[0]);
+	});
+	dispatcher.on('error', error => {
+		message.channel.send('uuhY que peLoTuuDOO!!!');
+		console.error(error);
 	});
 };
 
 export const preplay = async (message, url2, NO_SPAM) => {
 	const queue = message.client.queue;
 	const serverQueue = message.client.queue.get(message.guild.id);
-	console.log(message.guild.id);
 	const voiceChannel = message.member.voice.channel;
 	if (!voiceChannel) {
 		console.log(message.member);
@@ -94,5 +96,53 @@ export const preplay = async (message, url2, NO_SPAM) => {
 			);
 		}
 		return;
+	}
+};
+
+const SongFilter = response => parseInt(response.content);
+
+export const Buscar = async (message, busqueda) => {
+	try {
+		const videos = await youtube.searchVideos(busqueda, 10);
+		let index = 0;
+		// eslint-disable-next-line max-depth
+		let indice = 1;
+		message.channel
+			.send(
+				`
+__**Song selection:**__
+
+${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
+
+responde con un numero del 1 al 10 para elegir el video a reproducir.
+		`
+			)
+			.then(() => {
+				message.channel
+					.awaitMessages(SongFilter, {
+						max: 1,
+						time: 30000,
+						errors: ['time'],
+					})
+					.then(collected => {
+						indice = parseInt(collected.first().content);
+						youtube
+							.getVideoByID(videos[indice - 1].id)
+							.then(response =>
+								preplay(message, response.url, false)
+							);
+					})
+					.catch(collected => {
+						console.log(collected);
+						message.channel.send(
+							'Hubo algun problema procesando el comando, intenta otra vez :('
+						);
+					});
+			});
+	} catch (err) {
+		console.error(err);
+		return message.channel.send(
+			'🆘 no encontre nada uuhY que peLoTuuDOO!!!.'
+		);
 	}
 };

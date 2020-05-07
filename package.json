@@ -21,7 +21,8 @@
 		"setimmediate": "^1.0.5",
 		"simple-youtube-api": "^5.2.1",
 		"sqlite3": "^4.1.1",
-		"ytdl-core": "^2.1.1"
+		"ytdl-core": "^2.1.1",
+		"ytdl-core-discord": "^1.2.0"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.8.4",

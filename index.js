@@ -7,6 +7,7 @@ import { Middlewares, logMemUsg } from './utils';
 import { ServerInfo } from './commands/text/server';
 import { NewPlay } from './commands/text/music/newplay';
 import { NowPlaying } from './commands/text/music/nowplaying';
+import { Volumen } from './commands/text/music/volumen';
 
 const client = new Client();
 client.commands = new Discord.Collection();
@@ -18,6 +19,8 @@ const queue = new Map();
 superComandos.push(ServerInfo());
 superComandos.push(NewPlay());
 superComandos.push(NowPlaying());
+superComandos.push(Volumen());
+
 const api = Middlewares(superComandos);
 
 client.once('ready', () => {

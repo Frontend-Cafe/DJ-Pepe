@@ -2,7 +2,7 @@
 const { Util } = require('discord.js');
 const YouTube = require('simple-youtube-api');
 const youtube = new YouTube(GToken); */
-import { preplay } from './utils';
+import { preplay, Buscar } from './utils';
 export const NewPlay = () => {
 	const execute = message => {
 		// Preparo el mensaje de entrada:
@@ -13,6 +13,8 @@ export const NewPlay = () => {
 		if (url.match(pattern2)) {
 			preplay(message, args[1], false);
 			return;
+		} else if (args[1] === 'search') {
+			Buscar(message, args[2]);
 		} else {
 			return message.reply(
 				'Ingresaste mal el comando o la url, intenta otra vez!'
