@@ -4,28 +4,18 @@ const Client = require('./client/Client').default;
 const { PREFIX, TOKEN } = process.env;
 
 import { Middlewares, logMemUsg } from './utils';
-import { ServerInfo } from './commands/text/server';
-import { NewPlay } from './commands/text/music/newplay';
-import { NowPlaying } from './commands/text/music/nowplaying';
-import { Volumen } from './commands/text/music/volumen';
+import textCommands from './commands/text';
 
 const client = new Client();
 client.commands = new Discord.Collection();
-
-const superComandos = [];
 // eslint-disable-next-line no-unused-vars
 const queue = new Map();
 
-superComandos.push(ServerInfo());
-superComandos.push(NewPlay());
-superComandos.push(NowPlaying());
-superComandos.push(Volumen());
-
-const api = Middlewares(superComandos);
+const api = Middlewares(textCommands);
 
 client.once('ready', () => {
 	logMemUsg();
-	console.log(superComandos);
+	console.log(textCommands);
 	console.log('Ready!');
 });
 
@@ -33,14 +23,10 @@ client.once('reconnecting', () => {
 	console.log('Reconnecting!');
 });
 
-client.once('disconnect', () => {
-	console.log('Disconnect!');
-});
-
 client.on('message', async message => {
 	if (message.author.bot) return;
 	if (!message.content.startsWith(PREFIX)) return; // quien te conoce papa?
-
+	message.content = message.content.substring(1);
 	try {
 		return api(message);
 	} catch (error) {

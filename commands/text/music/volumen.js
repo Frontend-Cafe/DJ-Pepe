@@ -13,7 +13,7 @@ export const Volumen = () => {
 	};
 
 	return {
-		prefix: '$volumen',
+		prefix: 'volumen',
 		exec: execute,
 	};
 };

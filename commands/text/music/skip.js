@@ -1,11 +1,17 @@
-module.exports = {
-	name: 'skip',
-	description: 'Skip a song!',
-	execute(message) {
+export const Skip = () => {
+	const execute = message => {
 		const serverQueue = message.client.queue.get(message.guild.id);
-		//if (!message.member.voiceChannel) return message.channel.send('You have to be in a voice channel to stop the music!');
+		if (!message.member.voice.channel)
+			return message.channel.send(
+				'Si no estas en un canal de voz no puedo saltar la cumbia :('
+			);
 		if (!serverQueue)
-			return message.channel.send('There is no song that I could skip!');
+			return message.channel.send('no estoy reproduciendo nada!');
 		serverQueue.connection.dispatcher.end();
-	},
+	};
+
+	return {
+		prefix: 'skip',
+		exec: execute,
+	};
 };

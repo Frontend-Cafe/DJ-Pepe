@@ -11,4 +11,4 @@ export default class extends Client {
 		this.volumen = 5;
 		this.config = config;
 	}
-};
+}

@@ -18,7 +18,7 @@ export const NowPlaying = () => {
 	};
 
 	return {
-		prefix: '$nowplaying',
+		prefix: 'nowplaying',
 		exec: execute,
 	};
 };

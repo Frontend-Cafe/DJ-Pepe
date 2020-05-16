@@ -1,7 +1,6 @@
 require('dotenv').config();
 const ytdl = require('ytdl-core-discord');
 const { GTOKEN } = process.env;
-console.log(GTOKEN);
 const YouTube = require('simple-youtube-api');
 const youtube = new YouTube(GTOKEN);
 
@@ -16,7 +15,7 @@ const play = async (message, song) => {
 			'Si no estas en un canal de voz no puedo pasar cumbia :('
 		);
 	}
-	if (!song) {
+	if (!song.url) {
 		serverQueue.voiceChannel.leave();
 		queue.delete(guild.id);
 		return;
@@ -26,9 +25,13 @@ const play = async (message, song) => {
 		await ytdl(song.url, { filter: 'audioonly' }),
 		{ type: 'opus' }
 	);
+	message.channel.send(`✅ **${song.title}** Se esta reproduciendo!`);
 	dispatcher.on('finish', () => {
-		if (serverQueue.songs.length <= 1)
-			message.channel.send('termine de reproducir!');
+		if (serverQueue.songs.length <= 1) {
+			serverQueue.voiceChannel.leave();
+			queue.delete(guild.id);
+			return message.channel.send('termine de reproducir!');
+		}
 		serverQueue.songs.shift();
 		play(message, serverQueue.songs[0]);
 	});
@@ -43,7 +46,6 @@ export const preplay = async (message, url2, NO_SPAM) => {
 	const serverQueue = message.client.queue.get(message.guild.id);
 	const voiceChannel = message.member.voice.channel;
 	if (!voiceChannel) {
-		console.log(message.member);
 		return message.reply(
 			'Si no estas en un canal de voz no puedo pasar cumbia :('
 		);
@@ -79,10 +81,7 @@ export const preplay = async (message, url2, NO_SPAM) => {
 		try {
 			const connection = await voiceChannel.join();
 			queueContruct.connection = connection;
-			play(message, queueContruct.songs[0]);
-			return message.channel.send(
-				`✅ **${song.title}** Se esta reproduciendo!`
-			);
+			return play(message, queueContruct.songs[0]);
 		} catch (err) {
 			console.log(err);
 			queue.delete(message.guild.id);

@@ -1,7 +1,5 @@
-module.exports = {
-	name: 'purge',
-	description: 'Delete the last messages in all chats.',
-	async execute(message) {
+export const Purge = () => {
+	const execute = async message => {
 		const allowedRoles = ['Admin', 'DJ'];
 
 		if (message.member.roles.some(r => allowedRoles.includes(r))) {
@@ -39,5 +37,10 @@ module.exports = {
 					'https://i.pinimg.com/564x/b6/c0/9a/b6c09a69531be4e866f7e9ea9f686cae.jpg',
 			});
 		}
-	},
+	};
+
+	return {
+		prefix: 'purge',
+		exec: execute,
+	};
 };
