@@ -8,5 +8,5 @@ RUN apt-get install ffmpeg -y
 COPY package*.json ./
 
 RUN npm ci
-RUN npm build
-RUN npm start
+RUN npm run build
+RUN npm run start
