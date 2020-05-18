@@ -13,6 +13,7 @@ export const NewPlay = () => {
 		const url = args[1];
 		const pattern = /^https?:\/\/(www.youtube.com|youtube.com)\/.*list(.*)$/;
 		const pattern2 = /^https?:\/\/(www.youtube.com|youtube.com)\/watch\?v=/;
+		const pattern3 = /^(https?:\/\/(www.youtu.be|youtu.be))|(www.youtu.be|youtu.be)/;
 
 		if (url.match(pattern)) {
 			message.channel.send('Empezando a buscar en la playlist');
@@ -37,6 +38,16 @@ export const NewPlay = () => {
 			return;
 		} else if (args[1] === 'search') {
 			Buscar(message, args[2]);
+		} else if (url.match(pattern3)) {
+			preplay(
+				message,
+				`https://www.youtube.com/watch?v=${args[1].slice(
+					args[1].search('be/') + 3
+				)}
+				 `,
+				false
+			);
+			return;
 		} else {
 			return message.reply(
 				'Ingresaste mal el comando o la url, intenta otra vez!'
