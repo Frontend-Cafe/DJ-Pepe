@@ -1,7 +1,9 @@
+const express = require('express');
 require('dotenv').config();
 const Discord = require('discord.js');
 const Client = require('./client/Client').default;
 const { PREFIX, TOKEN } = process.env;
+const app = express();
 
 import { Middlewares, logMemUsg } from './utils';
 import textCommands from './commands/text';
@@ -59,3 +61,17 @@ client.on('message', async message => {
 });
 
 client.login(TOKEN);
+
+// server Express:
+app.get('/', function(req, res) {
+	const msg = `La bestia ta viva!, usando: ${(
+		process.memoryUsage().heapUsed /
+		1024 /
+		1024
+	).toPrecision(5)} MB de RAM`;
+	res.send(msg);
+});
+
+app.listen(process.env.PORT || 8080, function() {
+	console.log('Pasando cumbiones en el puerto 8080!');
+});
