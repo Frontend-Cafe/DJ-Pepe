@@ -1,3 +1,4 @@
 import MusicCommands from './music';
 import InfoCommands from './info';
-export default [...MusicCommands, ...InfoCommands];
+import LinksCommands from './links';
+export default [...MusicCommands, ...InfoCommands, ...LinksCommands];

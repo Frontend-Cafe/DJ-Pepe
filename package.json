@@ -14,9 +14,12 @@
 	"author": "FDSoftware",
 	"license": "MIT",
 	"dependencies": {
+		"@babel/plugin-transform-runtime": "^7.11.0",
+		"@babel/preset-env": "^7.11.0",
 		"@discordjs/opus": "^0.1.0",
 		"@discordjs/uws": "^10.149.0",
 		"abort-controller": "^3.0.0",
+		"axios": "^0.20.0",
 		"discord.js": "^12.3.0",
 		"dotenv": "^8.2.0",
 		"ffmpeg": "0.0.4",
@@ -26,9 +29,7 @@
 		"simple-youtube-api": "^5.2.1",
 		"sqlite3": "^4.2.0",
 		"ytdl-core": "^2.1.7",
-		"ytdl-core-discord": "^1.2.1",
-		"@babel/plugin-transform-runtime": "^7.11.0",
-		"@babel/preset-env": "^7.11.0"
+		"ytdl-core-discord": "^1.2.1"
 	},
 	"peerDependencies": {
 		"@babel/core": "^7.11.1",
