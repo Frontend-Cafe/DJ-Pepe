@@ -29,6 +29,7 @@
 		"ytdl-core-discord": "^1.2.1"
 	},
 	"devDependencies": {
+		"@babel/runtime": "^7.0.0-beta.55",
 		"@babel/cli": "^7.10.5",
 		"@babel/core": "^7.11.1",
 		"@babel/node": "^7.10.5",
