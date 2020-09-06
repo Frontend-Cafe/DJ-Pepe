@@ -27,6 +27,24 @@ client.on('message', async message => {
 	if (message.author.bot) return;
 	if (!message.content.startsWith(PREFIX)) return; // quien te conoce papa?
 	message.content = message.content.substring(1);
+
+	if (message.content.startsWith('panchuke')) {
+		// https://images.clarin.com/2017/09/11/rJHXmbNq-_340x340.jpg
+		return message.reply('*pancho electronico', {
+			files: [
+				'https://images.clarin.com/2017/09/11/rJHXmbNq-_340x340.jpg',
+			],
+		});
+	}
+	//picoparéntesis
+	if (message.content.startsWith('picoparéntesi')) {
+		//https://images.clarin.com/2017/09/11/rJHXmbNq-_340x340.jpg
+		return message.reply('*NO', {
+			files: [
+				'https://i.kym-cdn.com/photos/images/newsfeed/000/552/073/ea3',
+			],
+		});
+	}
 	try {
 		return api(message);
 	} catch (error) {
