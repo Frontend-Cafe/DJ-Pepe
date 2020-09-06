@@ -1,2 +1,1 @@
-# web: node ./build/index.js
-web: npm run dev
+web: node ./build/index.js

@@ -26,7 +26,9 @@
 		"simple-youtube-api": "^5.2.1",
 		"sqlite3": "^4.2.0",
 		"ytdl-core": "^2.1.7",
-		"ytdl-core-discord": "^1.2.1"
+		"ytdl-core-discord": "^1.2.1",
+		"@babel/plugin-transform-runtime": "^7.11.0",
+		"@babel/preset-env": "^7.11.0"
 	},
 	"peerDependencies": {
 		"@babel/core": "^7.11.1",
@@ -36,8 +38,6 @@
 		"@babel/cli": "^7.10.5",
 		"@babel/core": "^7.11.1",
 		"@babel/node": "^7.10.5",
-		"@babel/plugin-transform-runtime": "^7.11.0",
-		"@babel/preset-env": "^7.11.0",
 		"eslint": "^6.8.0",
 		"eslint-config-prettier": "^6.11.0",
 		"eslint-plugin-prettier": "^3.1.4",
