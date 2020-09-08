@@ -13,7 +13,11 @@ export const GetLinks = () => {
 			.split(',');
 
 		const response = await Axios.get(
-			'https://links-bot-cloud-functions.vercel.app/api/get-links'
+			tagsList
+				? `https://links-bot-cloud-functions.vercel.app/api/get-links?tags=${tagsList.join(
+						','
+				  )}`
+				: 'https://links-bot-cloud-functions.vercel.app/api/get-links'
 		);
 
 		const dataLinks = response.data.body;
@@ -25,10 +29,13 @@ export const GetLinks = () => {
 		// );
 
 		const tagsToString = tl => tl.map(t => `"${t}"`).join(', ');
-		const formatLinksToDescription = links =>
-			links
-				.map(l => `[${l.title}](${l.link})\n${l.description}`)
-				.join('\n\n');
+		const formatLinksToDescription = links => {
+			return links.length
+				? links
+						.map(l => `[${l.title}](${l.link})\n${l.description}`)
+						.join('\n\n')
+				: 'No se encontraron links con estos tags.';
+		};
 
 		const embed = {
 			title: `Links con los tags ${tagsToString(tagsList)}`,
