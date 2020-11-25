@@ -7,8 +7,6 @@ export default class extends Client {
 			partials: ['CHANNEL', 'REACTION'],
 		});
 		this.commands = new Collection();
-		this.queue = new Map();
-		this.volumen = 5;
 		this.config = config;
 	}
 }
