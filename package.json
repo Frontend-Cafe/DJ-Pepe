@@ -20,17 +20,18 @@
 		"@discordjs/uws": "^10.149.0",
 		"abort-controller": "^3.0.0",
 		"axios": "^0.20.0",
+		"body-parser": "^1.19.0",
 		"discord.js": "^12.3.0",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"ffmpeg": "0.0.4",
 		"fluent-ffmpeg": "^2.1.2",
+		"mongodb": "^3.6.1",
 		"opusscript": "0.0.7",
 		"setimmediate": "^1.0.5",
 		"simple-youtube-api": "^5.2.1",
 		"ytdl-core": "^2.1.7",
-		"ytdl-core-discord": "^1.2.1",
-		"mongodb": "^3.6.1"
+		"ytdl-core-discord": "^1.2.1"
 	},
 	"peerDependencies": {
 		"@babel/core": "^7.11.1",

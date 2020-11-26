@@ -4,16 +4,34 @@ const Discord = require('discord.js');
 const Client = require('./client/Client').default;
 const { PREFIX, TOKEN } = process.env;
 const app = express();
+const bodyParser = require("body-parser");
 
 import { Middlewares, logMemUsg } from './utils';
 import textCommands from './commands/text';
+
+//primero middleware de bodyParser para poder tener en el json del body
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: "10mb" }));
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, PATCH, PUT, POST, DELETE, OPTIONS"
+  );
+  // authorized headers for preflight requests
+  // https://developer.mozilla.org/en-US/docs/Glossary/preflight_request
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+});
+
 
 const client = new Client();
 client.commands = new Discord.Collection();
 // eslint-disable-next-line no-unused-vars
 const queue = new Map();
 
-const api = Middlewares(textCommands);
+const _middleware = Middlewares(textCommands);
 
 client.once('ready', () => {
 	logMemUsg();
@@ -30,25 +48,8 @@ client.on('message', async message => {
 	if (!message.content.startsWith(PREFIX)) return; // quien te conoce papa?
 	message.content = message.content.substring(1);
 
-	if (message.content.startsWith('panchuke')) {
-		// https://images.clarin.com/2017/09/11/rJHXmbNq-_340x340.jpg
-		return message.reply('*pancho electronico', {
-			files: [
-				'https://images.clarin.com/2017/09/11/rJHXmbNq-_340x340.jpg',
-			],
-		});
-	}
-	//picoparéntesis
-	if (message.content.startsWith('picoparéntesi')) {
-		//https://images.clarin.com/2017/09/11/rJHXmbNq-_340x340.jpg
-		return message.reply('*NO', {
-			files: [
-				'https://i.kym-cdn.com/photos/images/newsfeed/000/552/073/ea3',
-			],
-		});
-	}
 	try {
-		return api(message);
+		return _middleware(message);
 	} catch (error) {
 		console.error(error);
 		const numero = Math.floor(Math.random() * 100 + 1);
